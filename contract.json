@@ -1,0 +1,519 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is the contract for the hackathon. More information can be found in the respective repos",
+    "version": "0.1",
+    "title": "Apptiv"
+  },
+  "host": "apptiv.herokuapp.com",
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "events",
+      "description": "Everything about events"
+    },
+    {
+      "name": "user",
+      "description": "User information"
+    },
+    {
+      "name": "auth",
+      "description": "Authentication handling"
+    }
+  ],
+  "schemes": ["https", "http"],
+  "paths": {
+    "/events": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get all the events",
+        "description": "",
+        "operationId": "getEvents",
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "post": {
+        "tags": ["events"],
+        "summary": "Create an event",
+        "description": "",
+        "operationId": "uploadFile",
+        "consumes": ["multipart/form-data"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Event object that needs to be added to the store",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "tags": ["events"],
+        "summary": "Get a specific event by ID",
+        "description": "",
+        "operationId": "getEvent",
+        "responses": {
+          "200": {
+            "description": "okay",
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      },
+      "put": {
+        "tags": ["events"],
+        "summary": "Update an existing event",
+        "description": "",
+        "operationId": "updateEvent",
+        "consumes": ["application/json", "application/xml"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Even info to be updated",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Event"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "404": {
+            "description": "Event not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["events"],
+        "summary": "Delete a specific event by ID",
+        "description": "",
+        "responses": {
+          "405": {
+            "description": "Invalid input"
+          }
+        }
+      }
+    },
+
+    "/user/{username}": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get user by user name",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be fetched. Use John Smith for testing. ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "put": {
+        "tags": ["user"],
+        "summary": "Updated user",
+        "description": "This can only be done by the logged in user.",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "name that need to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid user supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user"],
+        "summary": "Delete user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "deleteUser",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The name that needs to be deleted",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid username supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/user/friends": {
+      "get": {
+        "tags": ["user"],
+        "summary": "Get the users friends",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The id of the user to get the friends ",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "description": "Invalid id supplied"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Logs user into the system",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Necessary info for login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "headers": {
+              "X-Expires-After": {
+                "type": "string",
+                "format": "date-time",
+                "description": "date in UTC when token expires"
+              },
+              "X-Rate-Limit": {
+                "type": "integer",
+                "format": "int32",
+                "description": "calls per hour allowed by the user"
+              }
+            },
+            "schema": {
+              "type": "string"
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Logs out current logged in user session",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "get": {
+        "tags": ["auth"],
+        "summary": "Checks if the user has a stored token",
+        "description": "",
+        "produces": ["application/json", "application/xml"],
+        "parameters": [],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Create user",
+        "description": "Signup process",
+        "consumes": ["application/json"],
+        "produces": ["application/json", "application/xml"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Necessary info for signup process",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Signup"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Event": {
+      "type": "object",
+      "description": "Mongoose model for the user",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "geo": {
+              "type": "object",
+              "properties": {
+                "lat": {
+                  "type": "integer"
+                },
+                "lng": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "Sports",
+            "Social",
+            "Health & Wellbeing",
+            "Travel",
+            "Family",
+            "Brunch",
+            "Spirituality",
+            "Dance",
+            "Others"
+          ]
+        },
+        "price": {
+          "type": "integer"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "image": {
+          "type": "string"
+        },
+        "attendees": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "ObjectIds for the users"
+          }
+        }
+      },
+      "required": ["id", "title", "description", "location", "category", "price", "startDate"],
+      "xml": {
+        "name": "Event"
+      }
+    },
+
+    "User": {
+      "description": "Mongoose model for the user",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "favourites": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "Sports",
+              "Social",
+              "Health & Wellbeing",
+              "Travel",
+              "Family",
+              "Brunch",
+              "Spirituality",
+              "Dance",
+              "Others"
+            ]
+          }
+        },
+        "goals": {
+          "type": "integer"
+        },
+        "attending": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "Id of the events the user attends"
+          }
+        },
+        "createdEvents": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "Id of a user"
+          }
+        },
+        "friends": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "description": "Id of a user"
+          }
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    },
+    "Login": {
+      "type": "object",
+      "description": "The necessary login information",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Login"
+      }
+    },
+    "Signup": {
+      "type": "object",
+      "description": "The necessary signup information",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "Signup"
+      }
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about Swagger",
+    "url": "http://swagger.io"
+  }
+}

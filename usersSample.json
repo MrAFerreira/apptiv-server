@@ -1,0 +1,25 @@
+[
+  {
+    "id": "627a4041abe4497186d4a6ca",
+    "username": "John Smith",
+    "email": "jsmitty@fakemail.com",
+    "password": "$2a$10$S8.syafZMSY3PJoAe.6jw.mJTktnk0oFyZBcN0UMwPzzhNDKi/9vy",
+    "image": "https://images.unsplash.com/photo-1611003741708-ef0c731b3887?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    "favourites": ["Sports", "Travel", "Spirituality"],
+    "goals": 3,
+    "attending": ["627a2ea14ba8ac7064bfe872"],
+    "createdEvents": ["627a225cfd5a526ce58b23ec"],
+    "friends": ["627b89e56a3d08346210eb12"]
+  },
+  {
+    "id": "627b89e56a3d08346210eb12",
+    "username": "Nat Voss",
+    "email": "nvoss@fakemail.com",
+    "password": "$2a$10$S8.syafZMSY3PJoAe.6jw.mJTktnk0oFyZBcN0UMwPzzhNDKi/9vy",
+    "image": "https://images.unsplash.com/photo-1653457977825-955fc12ce58d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8",
+    "favourites": ["Sports", "Social", "Health & Wellbeing"],
+    "goals": 3,
+    "attending": ["627a2ea14ba8ac7064bfe872"],
+    "friends": ["627a4041abe4497186d4a6ca"]
+  }
+]
