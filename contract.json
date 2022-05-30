@@ -211,7 +211,7 @@
         }
       }
     },
-    "/user/friends": {
+    "/user/{userId}/friends": {
       "get": {
         "tags": ["user"],
         "summary": "Get the users friends",
@@ -219,7 +219,7 @@
         "produces": ["application/json", "application/xml"],
         "parameters": [
           {
-            "name": "id",
+            "name": "userId",
             "in": "path",
             "description": "The id of the user to get the friends ",
             "required": true,
