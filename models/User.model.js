@@ -42,9 +42,6 @@ const userSchema = new Schema({
       ref: "User",
     },
   ],
-
-  // this second object adds extra properties: `createdAt` and `updatedAt`
-  timestamps: true,
 });
 
 const User = model("User", userSchema);
