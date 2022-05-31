@@ -6,10 +6,10 @@ const Event = require("./models/Event");
 router.get("/events", (req, res, next) => {
   Event.find({})
     .then((allEvents) => {
-      console.log(allEvents);
+      //console.log(allEvents);
       res.status(200).json(allEvents);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => res.status(400).json({ message: "No events were found" }));
 });
 
 module.exports = router;
