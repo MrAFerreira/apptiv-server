@@ -20,7 +20,7 @@ router.get("/verify", isAuthenticated, (req, res, next) => {
   res.status(200).json(req.payload);
 });
 
-router.post("/signup", (req, res) => {
+router.post("/signup", fileUploader.single("userImage"), (req, res) => {
   const { username, password } = req.body;
 
   if (!username) {
