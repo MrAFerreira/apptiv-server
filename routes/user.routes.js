@@ -14,7 +14,7 @@ router.get('/user/:username/friends', (req, res, next) => {
 
 router.get('/user/:username', (req, res, next) => {
   const { username } = req.params;
-  User.findById({ username })
+  User.find({ username })
     .then((userFromDB) => res.status(200).json(userFromDB))
     .catch((err) => res.status(400).json({ message: 'User not found!!' }));
 });
