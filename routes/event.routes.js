@@ -4,7 +4,7 @@ router.get("/events", (req, res, next) => {
   res.status(200).json("Should send all the events");
 });
 
-router.get("/events/eventId", (req, res, next) => {
+router.get("/events/:eventId", (req, res, next) => {
   const { eventId } = req.params;
   Event.findById(eventId)
     .then((response) => res.json(response))
