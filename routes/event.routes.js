@@ -57,9 +57,15 @@ router.put("/events/:id", (req, res, next) => {
       }
     });
 });
+const fileUploader = require("../config/cloudinary.config");
 
 router.get("/events", (req, res, next) => {
-  res.status(200).json("Should send all the events");
+  Event.find({})
+    .then((allEvents) => {
+      //console.log(allEvents);
+      res.status(200).json(allEvents);
+    })
+    .catch((err) => res.status(400).json({ message: "No events were found" }));
 });
 
 router.delete("/events/:eventId", (req, res, next) => {
