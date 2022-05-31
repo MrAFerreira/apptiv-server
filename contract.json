@@ -407,7 +407,15 @@
           }
         }
       },
-      "required": ["id", "title", "description", "location", "category", "price", "startDate"],
+      "required": [
+        "id",
+        "title",
+        "description",
+        "location",
+        "category",
+        "price",
+        "startDate"
+      ],
       "xml": {
         "name": "Event"
       }
