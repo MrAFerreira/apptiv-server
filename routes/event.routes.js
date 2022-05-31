@@ -144,6 +144,7 @@ router.post("/events/filter", (req, res, next) => {
       return (
         name === event.name ||
         categories === event.categories ||
+        location === event.location ||
         date === event.date ||
         price === event.price
       );
