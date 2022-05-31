@@ -16,27 +16,25 @@ const userSchema = new Schema({
       type: String,
       required:true
     },
-   id : {
-    type: integer, 
-  },
+
   image: {
     type: String,
   },
-  favourites: {
+  favourite: {
     type: [String],
-
   },
-  goalsAttending: [{
+  goal: {integer},
+  attending: [{
     type: Schema.Types.ObjectId,
-      ref: "Goals",
+      ref: "Events",
   }],
   createdEvents:[{
     type: Schema.Types.ObjectId,
-    ref: "Events",
+    ref: "User",
   }],
-  friends: [{
+  friend: [{
     type: Schema.Types.ObjectId,
-    ref: "Friends",
+    ref: "User",
   }],
     
     // this second object adds extra properties: `createdAt` and `updatedAt`
