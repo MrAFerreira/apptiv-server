@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model } = require('mongoose');
 
 // TODO: Please make sure you edit the user model to whatever makes sense in this case
 const userSchema = new Schema({
@@ -19,35 +19,47 @@ const userSchema = new Schema({
 
   image: {
     type: String,
-    default: "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg",
+    default:
+      'https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg',
   },
   favourites: {
     type: [String],
+    enum: [
+      'Sports',
+      'Social',
+      'Health & Wellbeing',
+      'Travel',
+      'Family',
+      'Brunch',
+      'Spirituality',
+      'Dance',
+      'Others',
+    ],
   },
   goals: { type: Number },
   attending: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Event",
+      ref: 'Event',
     },
   ],
   createdEvents: [
     {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   ],
   friends: [
     {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
   ],
-
-  // this second object adds extra properties: `createdAt` and `updatedAt`
-  timestamps: true,
+},
+{
+  timestamps: true
 });
 
-const User = model("User", userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;
