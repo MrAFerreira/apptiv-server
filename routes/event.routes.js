@@ -7,23 +7,19 @@ const fileUploader = require('../config/cloudinary.config');
 
 router.put('/events/:id', fileUploader.single('eventImage'), (req, res, next) => {
   const { id } = req.params;
-  const { title, description, location, category, price, startDate, endDate, image, attendees } =
-    req.body;
+  let { title, description, location, category, price, startDate, endDate } = req.body;
+
   //handle optional fields:
   if (endDate) {
     endDate = endDate;
   } else {
     endDate = null;
   }
-  if (image) {
-    image = image;
-  } else {
-    image = '';
-  }
+  let eventToUpdate;
 
-  Event.findByIdAndUpdate(
-    id,
-    {
+  let image;
+  if (req.file) {
+    eventToUpdate = {
       title,
       description,
       location,
@@ -31,11 +27,13 @@ router.put('/events/:id', fileUploader.single('eventImage'), (req, res, next) =>
       price,
       startDate,
       endDate,
-      image,
-      attendees,
-    },
-    { new: true }
-  )
+      image: req.file.path,
+    };
+  } else {
+    eventToUpdate = { title, description, location, category, price, startDate, endDate };
+  }
+
+  Event.findByIdAndUpdate(id, eventToUpdate, { new: true })
     .then((modifiedEvent) => {
       res.status(200).json(modifiedEvent);
       return modifiedEvent;
@@ -62,8 +60,7 @@ router.get('/events', (req, res, next) => {
 
 //create the post route:
 router.post('/events', fileUploader.single('eventImage'), (req, res, next) => {
-  const { title, description, location, category, price, startDate, endDate, image, attendees } =
-    req.body;
+  let { title, description, location, category, price, startDate, endDate } = req.body;
 
   //handle optional fields:
   if (endDate) {
@@ -71,23 +68,25 @@ router.post('/events', fileUploader.single('eventImage'), (req, res, next) => {
   } else {
     endDate = null;
   }
-  if (image) {
-    image = image;
+  let eventToCreate;
+
+  let image;
+  if (req.file) {
+    eventToCreate = {
+      title,
+      description,
+      location,
+      category,
+      price,
+      startDate,
+      endDate,
+      image: req.file.path,
+    };
   } else {
-    image = '';
+    eventToCreate = { title, description, location, category, price, startDate, endDate };
   }
 
-  Event.create({
-    title,
-    description,
-    location,
-    category,
-    price,
-    startDate,
-    endDate,
-    image,
-    attendees,
-  })
+  Event.create(eventToCreate)
     .then((eventCreated) => {
       //console.log(allEvents);
       res.status(200).json(eventCreated);
