@@ -5,7 +5,7 @@ const mongoose = require("mongoose");
 const Event = require("./models/Event");
 const fileUploader = require("../config/cloudinary.config");
 
-router.put("/events/:id", (req, res, next) => {
+router.put("/events/:id",fileUploader.single('eventImage'), (req, res, next) => {
   const { id } = req.params;
   const {
     title,
@@ -71,7 +71,7 @@ router.get("/events", (req, res, next) => {
 });
 
 //create the post route:
-router.post("/events", (req, res, next) => {
+router.post("/events",fileUploader.single('eventImage'), (req, res, next) => {
   const {
     title,
     description,
