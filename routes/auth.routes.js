@@ -1,37 +1,35 @@
-const router = require("express").Router();
+const router = require('express').Router();
 
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 // ℹ️ Handles password encryption
-const bcrypt = require("bcrypt");
-const mongoose = require("mongoose");
-const fileUploader = require("../config/cloudinary.config");
+const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
+const fileUploader = require('../config/cloudinary.config');
 // How many rounds should bcrypt run the salt (default [10 - 12 rounds])
 const saltRounds = 10;
 
 // Require the User model in order to interact with the database
-const User = require("../models/User.model");
+const User = require('../models/User.model');
 
-const { isAuthenticated } = require("../middleware/jwt.middleware");
+const { isAuthenticated } = require('../middleware/jwt.middleware');
 
-router.get("/verify", isAuthenticated, (req, res, next) => {
-  console.log("req.payload", req.payload);
+router.get('/verify', isAuthenticated, (req, res, next) => {
+  console.log('req.payload', req.payload);
 
   res.status(200).json(req.payload);
 });
 
-router.post("/signup", fileUploader.single("userImage"), (req, res) => {
-  const { username, password } = req.body;
+router.post('/signup', fileUploader.single('userImage'), (req, res) => {
+  const { username, password, email } = req.body;
 
   if (!username) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your username." });
+    return res.status(400).json({ errorMessage: 'Please provide your username.' });
   }
 
   if (password.length < 8) {
     return res.status(400).json({
-      errorMessage: "Your password needs to be at least 8 characters long.",
+      errorMessage: 'Your password needs to be at least 8 characters long.',
     });
   }
 
@@ -51,7 +49,7 @@ router.post("/signup", fileUploader.single("userImage"), (req, res) => {
   User.findOne({ username }).then((found) => {
     // If the user is found, send the message username is taken
     if (found) {
-      return res.status(400).json({ errorMessage: "Username already taken." });
+      return res.status(400).json({ errorMessage: 'Username already taken.' });
     }
 
     // if user is not found, create a new user - start with hashing the password
@@ -63,6 +61,7 @@ router.post("/signup", fileUploader.single("userImage"), (req, res) => {
         return User.create({
           username,
           password: hashedPassword,
+          email,
         });
       })
       .then((user) => {
@@ -75,8 +74,7 @@ router.post("/signup", fileUploader.single("userImage"), (req, res) => {
         }
         if (error.code === 11000) {
           return res.status(400).json({
-            errorMessage:
-              "Username need to be unique. The username you chose is already in use.",
+            errorMessage: 'Username need to be unique. The username you chose is already in use.',
           });
         }
         return res.status(500).json({ errorMessage: error.message });
@@ -84,20 +82,18 @@ router.post("/signup", fileUploader.single("userImage"), (req, res) => {
   });
 });
 
-router.post("/login", (req, res, next) => {
+router.post('/login', (req, res, next) => {
   const { username, password } = req.body;
 
   if (!username) {
-    return res
-      .status(400)
-      .json({ errorMessage: "Please provide your username." });
+    return res.status(400).json({ errorMessage: 'Please provide your username.' });
   }
 
   // Here we use the same logic as above
   // - either length based parameters or we check the strength of a password
   if (password.length < 8) {
     return res.status(400).json({
-      errorMessage: "Your password needs to be at least 8 characters long.",
+      errorMessage: 'Your password needs to be at least 8 characters long.',
     });
   }
 
@@ -106,21 +102,21 @@ router.post("/login", (req, res, next) => {
     .then((user) => {
       // If the user isn't found, send the message that user provided wrong credentials
       if (!user) {
-        return res.status(400).json({ errorMessage: "Wrong credentials." });
+        return res.status(400).json({ errorMessage: 'Wrong credentials.' });
       }
 
       // If user is found based on the username, check if the in putted password matches the one saved in the database
       bcrypt.compare(password, user.password).then((isSamePassword) => {
         if (!isSamePassword) {
-          return res.status(400).json({ errorMessage: "Wrong credentials." });
+          return res.status(400).json({ errorMessage: 'Wrong credentials.' });
         }
         const { _id, username } = user;
 
         const payload = { _id, username };
 
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
-          algorithm: "HS256",
-          expiresIn: "6h",
+          algorithm: 'HS256',
+          expiresIn: '6h',
         });
 
         return res.status(200).json({ authToken });
