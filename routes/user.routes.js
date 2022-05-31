@@ -3,6 +3,7 @@ const router = require('express').Router();
 const User = require('../models/User.model')
 
 router.get('/user/:userId/friends', (req, res, next) => {
+  const { userId } = req.params;
   User.findById((userId))
   .populate("friends")
   .then((foundUser) => {
