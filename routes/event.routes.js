@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const Event = require("../models/Event.model");
 
 const mongoose = require('mongoose');
 //importing the Event model
