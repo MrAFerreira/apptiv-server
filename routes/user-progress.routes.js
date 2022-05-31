@@ -31,7 +31,7 @@ router.get("/user/:userId/progress", (req, res, next) => {
     .then((response) => {
       let result = Math.round((100 * passedEvents()) / response.goals);
       if (result <= 100) {
-        res.json(result);
+        res.json({ result, goals: response.goals });
       }
     })
     .catch((err) => res.json(err));
