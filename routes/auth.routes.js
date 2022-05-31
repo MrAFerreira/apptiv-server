@@ -83,9 +83,9 @@ router.post('/signup', fileUploader.single('userImage'), (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username) {
+  if (!email) {
     return res.status(400).json({ errorMessage: 'Please provide your username.' });
   }
 
@@ -98,7 +98,7 @@ router.post('/login', (req, res, next) => {
   }
 
   // Search the database for a user with the username submitted in the form
-  User.findOne({ username })
+  User.findOne({ email })
     .then((user) => {
       // If the user isn't found, send the message that user provided wrong credentials
       if (!user) {
