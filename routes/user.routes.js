@@ -10,4 +10,12 @@ router
   })
   .catch((err) => res.status(400).json({ message: "User not found!!" }));
 
+router.put("/user/:userId", (req, res, next) => {
+  const { userId } = req.params;
+  const { username, email, password, image, favourites } = req.body;
+  User.create({ username, email, password, image, favourites })
+    .then((response) => res.json(response))
+    .catch((err) => res.status(400).json({ message: "No user updated" }));
+});
+
 module.exports = router;
