@@ -2,9 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User.model");
 const Event = require("../models/Event.model");
 
-const MONGO_URI =
-  process.env.MONGO_URI ||
-  "mongodb+srv://OPERATORS:1234ironhack@cluster0.oeckanp.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI
 
 mongoose
   .connect(MONGO_URI)
