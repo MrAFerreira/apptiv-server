@@ -12,7 +12,6 @@ router.put("/events/:id", (req, res, next) => {
     category,
     price,
     startDate,
-    enDate,
     endDate,
     image,
     attendees,
